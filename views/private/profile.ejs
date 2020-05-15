@@ -1,0 +1,46 @@
+<%- include('header.ejs') %>
+<section class="container" style="margin-top: 30px;">
+  <div class="row">
+    <div class="col s8">
+      <div class="col s12 m8 offset-m2 l11">
+        <div class="card-panel grey lighten-5 z-depth-1">
+          <div class="row valign-wrapper">
+            
+              <div class="col s12">
+                    <img src="/<%= user.profile_image %>" width="50" height="50" alt="" class="circle responsive-img">
+                <span class="black-text">
+                    <ul>
+                        <li><strong>Name:</strong> <%= user.first_name + ' ' + user.last_name %></li>
+                        <li><strong>Postal code:</strong> <%= user.postal_code %></li>
+                        <li><strong>City:</strong> <%= user.city %></li>
+                        <li><strong>Email:</strong> <%= user.email %></li>
+                        <li><strong>Age:</strong> <%= user.age %></li>
+                    </ul>
+                    <br>
+                    <strong>Profile text</strong><br><br>
+                    <span style="white-space: pre-line;"><%= user.profile_text %></span>
+                </span>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col s4">
+      <div style="display: flex;">
+        <% if (isAddable) { %>
+       <i class="material-icons deep-orange-text" onclick="addFriend(<%= user.id %>)" style="font-size: 45px; cursor: pointer;"
+            title="Find friends">person_add</i>
+            <% } %>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; width: 100px">
+        <img src="" width="25" height="25" class="circle responsive-img" />
+        <a href="profile/"><span></span></a>
+      </div>
+ 
+    </div>
+  </div>
+</section>
+</body>
+
+</html>

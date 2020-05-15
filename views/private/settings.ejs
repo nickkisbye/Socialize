@@ -1,0 +1,37 @@
+<%- include('header.ejs') %>
+<section class="container">
+    <div class="settings">
+        <form class="form-container" method="POST" action="/update">
+            <div class="login-box">
+                <label>Username</label>
+                <input type="text" name="username" value="<%- user.username %>" />
+                <label>Email</label>
+                <input type="email" name="email" value="<%- user.email %>" />
+                <label>First name</label>
+                <input type="text" name="first_name" value="<%- user.first_name %>" />
+                <label>Last name</label>
+                <input type="text" name="last_name" value="<%- user.last_name %>" />
+                <label>City</label>
+                <input type="text" name="city" value="<%- user.city %>" />
+                <label>Postal Code</label>
+                <input type="text" name="postal_code" value="<%- user.postal_code %>" />
+                <label>Age</label>
+                <input type="text" name="age" value="<%- user.age %>" />
+                <label>Profile text</label>
+                <div>
+                    <div class="input-field col s12">
+                        <textarea name="profile_text" id="textarea2" style="min-height: 150px" class="materialize-textarea"
+                            data-length="120"><%- user.profile_text %></textarea>
+                    </div>
+                </div>
+            </div>
+            <button class="waves-effect waves-light btn-large deep-orange">Save settings</button>
+        </form>
+        <div>
+        </div>
+    </div>
+
+</section>
+</body>
+
+</html>

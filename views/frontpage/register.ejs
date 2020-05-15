@@ -1,0 +1,35 @@
+<%- include('header.ejs') %>
+<section class="container">
+    <div class="frontpage-header">
+        <form class="form-container" method="POST" action="/signup">
+            <div class="login-box">
+                <label>Username</label>
+                <input type="text" name="username" />
+                <label>Email</label>
+                <input type="email" name="email" />
+                <label>Password</label>
+                <input type="password" name="password" />
+                <label>Repeat password</label>
+                <input type="password" name="password_repeat" />
+                <label>First name</label>
+                <input type="text" name="first_name" />
+                <label>Last name</label>
+                <input type="text" name="last_name" />
+                <label>City</label>
+                <input type="text" name="city" />
+                <label>Postal Code</label>
+                <input type="text" name="postal_code" />
+                <label>Age</label>
+                <input type="text" name="age" />
+            </div>
+            <button class="waves-effect waves-light btn-large deep-orange">Create user</button>
+            <% if (message) { %> <div class="red-text"><%= message %></div> <% } %>
+        </form>
+        <div>
+        </div>
+    </div>
+    
+</section>
+</body>
+
+</html>

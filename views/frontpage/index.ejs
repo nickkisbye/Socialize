@@ -1,0 +1,28 @@
+<%- include('header.ejs') %>
+<section class="container">
+    <div class="frontpage-header">
+        <div class="frontpage-text">
+            <h3>Welcome to Socialize!</h3>
+            <h5>The new Social Media site</h5>
+            <br />
+            <span>Register today to gain access to your own profile, and share your information with your
+                friends.</span>
+        </div>
+        <form class="form-container" method="POST" action="/login">
+            <div class="login-box">
+                <label>Username</label>
+                <input type="text" name="username" />
+                <label>Password</label>
+                <input type="password" name="password" />
+            </div>
+            <button class="waves-effect waves-light btn-large deep-orange">Login</button>
+            <span>Don't have a user? Register <a class="deep-orange-text" href="/register">here</a>!</span>
+        </form>
+        <div>
+        </div>
+    </div>
+    
+</section>
+</body>
+
+</html>
