@@ -33,7 +33,7 @@ router.post('/add/:id', authMiddleware, async (req, res) => {
      return res.send({ friendship });
 });
 
-router.post('/accept/:id', async (req, res) => {
+router.post('/accept/:id', authMiddleware, async (req, res) => {
     const friendship = await Friendship.query().patch({
         'is_accepted': 1
      }).where(builder => builder.where('user1_id', req.params.id).andWhere('user2_id', req.session.user.id));
@@ -41,7 +41,7 @@ router.post('/accept/:id', async (req, res) => {
      return res.send({ friendship });
 });
 
-router.delete('/delete/:id', async (req, res) => {
+router.delete('/delete/:id', authMiddleware, async (req, res) => {
     const friendship = await Friendship.query().delete()
         .where(builder => builder.where('user1_id', req.params.id).andWhere('user2_id', req.session.user.id))
         .orWhere(builder => builder.where('user2_id', req.params.id).andWhere('user1_id', req.session.user.id));
