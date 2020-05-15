@@ -90,6 +90,7 @@ router.post('/reset', async (req, res) => {
             'password': hash
         }).where('email', email);
 
+        // If email exists, the user variable will be equal to 1.
         if (user === 1) {
             let testAccount = await nodemailer.createTestAccount();
             let transporter = nodemailer.createTransport({

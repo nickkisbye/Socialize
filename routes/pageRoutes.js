@@ -26,6 +26,11 @@ router.get('/dashboard', authMiddleware, async (req, res) => {
     .where('user2_id', id)
     .andWhere('is_accepted', 0).withGraphFetched('user1').withGraphFetched('user2');
 
+    /**  
+    * The user can both be user1_id or user2_id in Friend and Friendrequests.
+    * Because of this, I check which user is the other person, so I only show the users that the logged in user
+    * is friends with.
+    */
     let requests = friendRequests.map((result) => {
         let friendRequest = req.session.user.id === result.user1[0].id ? result.user2[0] : result.user1[0];
         return friendRequest;       
@@ -37,7 +42,7 @@ router.get('/dashboard', authMiddleware, async (req, res) => {
     });
 
     let posts = [] 
-        
+    // For each friend that the user has, get the latest post and push it to the posts array.
     await Promise.all(friends.map(async (friend) => {
         let postResult = await Post.query().select()
                         .where('author_id', friend.id)
@@ -53,23 +58,22 @@ router.get('/dashboard', authMiddleware, async (req, res) => {
 });
 
 router.get('/profile/:id', authMiddleware, async (req, res) => {
-const user = await User.query().select(fullUserCredentials).findById(req.params.id).withGraphFetched('role');
+    const user = await User.query().select(fullUserCredentials).findById(req.params.id).withGraphFetched('role');
+    const isFriends = await Friendship.query().select('id')
+                            .where(builder => builder.where('user1_id', req.params.id).andWhere('user2_id', req.session.user.id))
+                            .orWhere(builder => builder.where('user2_id', req.params.id).andWhere('user1_id', req.session.user.id));
+    const posts = await Post.query().select()
+                        .where('author_id', req.params.id)
+                        .withGraphFetched('users').orderBy('created_at', 'DESC');
 
-const isFriends = await Friendship.query().select('id')
-                        .where(builder => builder.where('user1_id', req.params.id).andWhere('user2_id', req.session.user.id))
-                        .orWhere(builder => builder.where('user2_id', req.params.id).andWhere('user1_id', req.session.user.id));
-
-const posts = await Post.query().select()
-                    .where('author_id', req.params.id)
-                    .withGraphFetched('users').orderBy('created_at', 'DESC');
-
-if (user) return res.render('private/profile', { user, isAddable: req.session.user.id !== user.id && isFriends.length === 0, posts, moment });
-return res.redirect('/dashboard/');
+    // If the user exists, render the page. isAddable is used to know if the "add friend" icon should be shown or not.
+    if (user) return res.render('private/profile', { user, isAddable: req.session.user.id !== user.id && isFriends.length === 0, posts, moment });
+    return res.redirect('/dashboard/');
 });
 
 router.get('/settings/', authMiddleware, async (req, res) => {
-const user = await User.query().select(fullUserCredentials).findById(req.session.user.id).withGraphFetched('role');
-return res.render('private/settings', { user })
+    const user = await User.query().select(fullUserCredentials).findById(req.session.user.id).withGraphFetched('role');
+    return res.render('private/settings', { user })
 });
 
 router.get('/find/', authMiddleware, async (req, res) => {
