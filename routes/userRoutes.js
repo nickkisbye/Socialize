@@ -14,10 +14,6 @@ router.post('/update', authMiddleware, async (req, res) => {
     return res.redirect('/dashboard');
 });
 
-/**
- * GET
- */
-
 router.post('/search', authMiddleware, async (req, res) => {
     const { search_result } = req.body;
     const result = await User.query().select(userSearchCredentials).where('first_name', 'like', `%${search_result}%`).orWhere('last_name', 'like', `%${search_result}%`);
@@ -41,7 +37,6 @@ router.post('/accept/:id', async (req, res) => {
     const friendship = await Friendship.query().patch({
         'is_accepted': 1
      }).where(builder => builder.where('user1_id', req.params.id).andWhere('user2_id', req.session.user.id));
-     console.log(friendship);
      
      return res.send({ friendship });
 });

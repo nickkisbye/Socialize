@@ -15,7 +15,7 @@ submitPost = () => {
           class="material-icons right red-text" style="cursor: pointer;">delete</i></a>` : null }</span>
           <div class="row valign-wrapper">
             <div class="col s2">
-              <img src="${post.users.profile_image}" alt="" class="circle responsive-img">
+              <img src="/${post.users.profile_image}" alt="" class="circle responsive-img">
             </div>
             <div class="col s10">
               <span class="black-text">

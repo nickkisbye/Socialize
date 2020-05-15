@@ -2,21 +2,8 @@
 <section class="container" style="margin-top: 30px;">
   <div class="row">
     <div class="col s8">
-      <div class="col s12 m8 offset-m2 l11">
-        <div class="card-panel grey lighten-5 z-depth-1">
-          <div class="row valign-wrapper">
-            <div class="col s12">
-              <label>What's on your mind?</label>
-              <input id="postInput" />
-              <button class="btn waves-effect waves-light deep-orange" type="submit" name="action"
-                onClick="submitPost()">Submit
-                <i class="material-icons right">send</i>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
       <div id="posts">
+          <h5 style="margin-left: 10px">What's new?</h5>
         <% if (posts) posts.forEach(post => { %>
         <div class="col s12 m8 offset-m2 l11">
           <div class="card-panel grey lighten-5 z-depth-1">

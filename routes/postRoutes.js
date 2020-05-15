@@ -20,7 +20,7 @@ router.post('/post', authMiddleware, async (req, res) => {
 router.get('/post/:id', authMiddleware, async (req, res) => {
     const id = req.params.id;
     await Post.query().delete().where('id', id).andWhere('author_id', req.session.user.id);
-    return res.redirect('/dashboard');
+    return res.redirect('/profile/' + req.session.user.id);
 })
 
 

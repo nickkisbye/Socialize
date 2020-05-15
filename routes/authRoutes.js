@@ -1,5 +1,7 @@
 const router = require('express').Router();
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
 
 const User = require('../models/User');
 
@@ -22,13 +24,13 @@ router.post('/login', async (req, res) => {
     const foundUser = user[0];
 
     bcrypt.compare(password, foundUser.password, (err, result) => {
-        if(result == true) {
+        if (result == true) {
             req.session.user = {
                 id: foundUser.id,
                 username: foundUser.username,
                 email: foundUser.email
             }
-        
+
             return res.redirect('/dashboard');
         } else {
             console.log("Wrong password");
@@ -77,6 +79,42 @@ router.post('/signup', async (req, res) => {
         return res.redirect('/dashboard');
     });
 })
+
+router.post('/reset', async (req, res) => {
+    const { email } = req.body;
+    const saltRounds = 10;
+    let token = crypto.randomBytes(16).toString('hex');
+
+    bcrypt.hash(token, saltRounds, async (err, hash) => {
+        const user = await User.query().patch({
+            'password': hash
+        }).where('email', email);
+
+        if (user === 1) {
+            let testAccount = await nodemailer.createTestAccount();
+            let transporter = nodemailer.createTransport({
+                host: "smtp.ethereal.email",
+                port: 587,
+                secure: false,
+                auth: {
+                    user: testAccount.user, 
+                    pass: testAccount.pass 
+                }
+            });
+
+            let info = await transporter.sendMail({
+                from: '"Socialize" <noreply@socialize.com>', 
+                to: email, 
+                subject: "Password reset",
+                html: `<b>Your new password is: ${token}</b>`
+              });
+
+            console.log(nodemailer.getTestMessageUrl(info));
+            return res.redirect('/');
+        }
+    });
+
+});
 
 router.get('/logout', authMiddleware, (req, res) => {
     req.session.destroy();

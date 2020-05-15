@@ -2,6 +2,22 @@
 <section class="container" style="margin-top: 30px;">
   <div class="row">
     <div class="col s8">
+      <% if (userId === user.id) { %>
+        <div class="col s12 m8 offset-m2 l11">
+            <div class="card-panel grey lighten-5 z-depth-1">
+              <div class="row valign-wrapper">
+                <div class="col s12">
+                  <label>What's on your mind?</label>
+                  <input id="postInput" />
+                  <button class="btn waves-effect waves-light deep-orange" type="submit" name="action"
+                    onClick="submitPost()">Submit
+                    <i class="material-icons right">send</i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <% } %>
       <div class="col s12 m8 offset-m2 l11">
         <div class="card-panel grey lighten-5 z-depth-1">
           <div class="row valign-wrapper">
@@ -23,6 +39,31 @@
               </div>
           </div>
         </div>
+      </div>
+      <div class="col s12">
+        <h6><%= user.first_name + 's Posts' %></h6>
+      </div>
+            <div id="posts">
+        <% if (posts) posts.forEach(post => { %>
+        <div class="col s12 m8 offset-m2 l11">
+          <div class="card-panel grey lighten-5 z-depth-1">
+            <span style="float: right"><% if (post.author_id === userId) { %><a href="/post/<%= post.id %>"><i
+                class="material-icons right red-text" style="cursor: pointer;">delete</i></a><% } %></span>
+            <div class="row valign-wrapper">
+              <div class="col s2">
+                <img src="/<%- post.users.profile_image %>" alt="" class="circle responsive-img">
+              </div>
+              <div class="col s10">
+                <span class="black-text">
+                  <%- post.text %>
+                </span>
+              </div>
+
+            </div>
+            <%- post.users.first_name + ' ' + post.users.last_name + ' - ' + moment(post.created_at).format('LLLL') %>
+          </div>
+        </div>
+        <% }) %>
       </div>
     </div>
     <div class="col s4">
